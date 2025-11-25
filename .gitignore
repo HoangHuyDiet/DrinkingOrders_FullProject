@@ -1,0 +1,14 @@
+# Java / IntelliJ
+.idea/
+*.iml
+target/
+.mvn/
+mvnw
+mvnw.cmd
+
+# Nodejs / Frontend (Chuẩn bị trước)
+node_modules/
+dist/
+build/
+.env
+.DS_Store
