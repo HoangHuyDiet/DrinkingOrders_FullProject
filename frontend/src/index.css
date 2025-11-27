@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Định nghĩa màu tùy chỉnh */
+@theme {
+  --color-coffee-900: #2b211e;
+  --color-coffee-800: #4a3b36;
+  --color-coffee-50: #fdf8f6;
+  --color-gold-500: #c6a87c;
+  --color-gold-600: #b08d55;
+}
