@@ -1,5 +1,6 @@
 package com.codewiithhoang.drinkingorders.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class OrderDetail {
   // Nối về Order
   @ManyToOne
   @JoinColumn(name = "order_id")
+  @JsonIgnore
   private Order order;
 
   // Nối về Product

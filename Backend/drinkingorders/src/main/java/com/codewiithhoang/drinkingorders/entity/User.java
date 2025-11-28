@@ -1,5 +1,6 @@
 package com.codewiithhoang.drinkingorders.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -27,5 +28,6 @@ public class User {
 
   // Quan hệ 1-N với Order
   @OneToMany(mappedBy = "user")
+  @JsonIgnore
   private List<Order> orders;
 }

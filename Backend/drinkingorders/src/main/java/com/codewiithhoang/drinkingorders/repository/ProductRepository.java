@@ -9,5 +9,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
   //Gọi tới tên của sản phẩm từ CSDL
-  List<Product> findByNameContaining(String name);
+  List<Product> findByNameContaining(String   name);
 }
