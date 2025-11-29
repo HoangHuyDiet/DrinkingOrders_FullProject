@@ -38,7 +38,7 @@ const Dashboard = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold text-[#4a3b36] mb-6 border-l-4 border-[#c6a87c] pl-4">
-        📊 Tổng Quan Kinh Doanh
+        Tổng Quan Kinh Doanh
       </h2>
 
       {/* 1. CÁC THẺ THỐNG KÊ (SUMMARY CARDS) */}

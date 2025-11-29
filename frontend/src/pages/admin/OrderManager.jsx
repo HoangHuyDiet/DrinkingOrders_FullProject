@@ -34,7 +34,7 @@ const OrderManager = () => {
   console.log("Dữ liệu orders hiện tại:", orders);
   return (
     <div>
-      <h2 className="text-2xl font-bold text-[#4a3b36] mb-6 border-l-4 border-[#c6a87c] pl-4">📦 Quản lý Đơn hàng</h2>
+      <h2 className="text-2xl font-bold text-[#4a3b36] mb-6 border-l-4 border-[#c6a87c] pl-4">Quản lý Đơn hàng</h2>
       
       <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
         <table className="w-full text-left">

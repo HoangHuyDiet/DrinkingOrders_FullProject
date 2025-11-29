@@ -28,7 +28,6 @@ public class Product {
   // Quan hệ N-1 với Category
   @ManyToOne
   @JoinColumn(name = "category_id", nullable = false) // Tên cột trong DB
-  @JsonIgnore // Để tránh vòng lặp vô tận khi chuyển sang JSON
   private Category category;
 
   // Quan hệ 1-N với OrderDetail (Một món nằm trong nhiều hóa đơn)

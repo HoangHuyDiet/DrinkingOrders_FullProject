@@ -9,6 +9,10 @@ import AdminLayout from "./layouts/AdminLayout";
 import HomePage from "./pages/user/HomePage";
 import Dashboard from "./pages/admin/Dashboard";
 import OrderManager from "./pages/admin/OrderManager";
+import ProductManager from "./pages/admin/ProductManager";
+import RegisterPage from "./pages/LoginAndRegister/RegisterPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoginPage from "./pages/LoginAndRegister/LoginPage";
 
 function App() {
   return (
@@ -23,11 +27,18 @@ function App() {
 
         {/* --- NHÁNH 2: GIAO DIỆN QUẢN TRỊ --- */}
         {/* Mọi đường dẫn bắt đầu bằng /admin sẽ dùng AdminLayout */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={
+          <ProtectedRoute roleRequired="ADMIN">
+            <AdminLayout/>
+          </ProtectedRoute>
+        }>
           <Route index element={<Dashboard />} />        {/* http://localhost:5173/admin */}
           <Route path="orders" element={<OrderManager />} /> {/* http://localhost:5173/admin/orders */}
+          <Route path="products" element={<ProductManager />} />
         </Route>
 
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>
   );

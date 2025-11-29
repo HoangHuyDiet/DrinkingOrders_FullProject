@@ -36,3 +36,14 @@ export const deleteProduct = async (id) => {
         return false;
     }
 };
+
+// 4. Sửa món
+export const updateProduct = async (id, productData) => {
+    try {
+        const response = await axios.put(`${API_URL}/${id}`, productData);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi sửa món:", error);
+        throw error;
+    }
+};

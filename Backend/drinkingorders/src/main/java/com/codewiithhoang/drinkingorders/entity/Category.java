@@ -1,5 +1,6 @@
 package com.codewiithhoang.drinkingorders.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -18,5 +19,6 @@ public class Category {
   // Quan hệ 1-N với Product
   // mappedBy="category" nghĩa là bên Product sẽ có thuộc tính tên là "category"
   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+  @JsonIgnore
   private List<Product> products;
 }

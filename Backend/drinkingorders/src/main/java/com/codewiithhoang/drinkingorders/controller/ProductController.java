@@ -35,9 +35,16 @@ public class ProductController {
     return ResponseEntity.ok(productService.searchProducts(name));
   }
 
-  @DeleteMapping("/{id}/")
+  // 4. Xóa món
+  @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
     productService.deleteProduct(id);
     return ResponseEntity.ok("Xóa thành công!");
+  }
+
+  // 5. Sửa món:
+  @PutMapping("/{id}")
+  public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+    return ResponseEntity.ok(productService.updateProduct(id, productDTO));
   }
 }

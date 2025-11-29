@@ -6,16 +6,17 @@ const Sidebar = () => {
 
   // Danh sách các mục menu
   const menuItems = [
-    { name: "📊 Thống kê", path: "/admin" },
-    { name: "📦 Quản lý Đơn hàng", path: "/admin/orders" },
-    { name: "☕ Quản lý Menu", path: "/admin/products" }, // (Nếu cậu làm thêm trang này)
+    { name: "Thống kê", path: "/admin" },
+    { name: "Quản lý Đơn hàng", path: "/admin/orders" },
+    { name: "Quản lý Menu", path: "/admin/products" },
+    { name: "Quản lý Tài Khoản", path: "/admin/users"}
   ];
 
   return (
     <aside className="w-64 bg-[#2b211e] text-white flex flex-col h-full min-h-screen">
       {/* Logo Admin */}
       <div className="p-6 text-2xl font-bold text-[#c6a87c] border-b border-white/10 flex items-center gap-2">
-        🛡️ ADMIN
+        ADMIN
       </div>
 
       {/* Menu */}
@@ -38,7 +39,7 @@ const Sidebar = () => {
       {/* Nút đăng xuất */}
       <div className="p-4 border-t border-white/10">
         <button className="w-full text-left px-4 py-2 text-red-400 hover:bg-white/10 rounded font-semibold flex items-center gap-2">
-          🚪 Đăng xuất
+          Đăng xuất
         </button>
       </div>
     </aside>

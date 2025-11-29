@@ -53,4 +53,23 @@ public class ProductService {
       throw new RuntimeException("Không tìm thấy món để xóa!");
     }
   }
+
+  // 5. Sửa món theo ID
+  public Product updateProduct(Long id, ProductDTO dto) {
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Không tìm thấy món!"));
+
+    // Cập nhật thông tin mới
+    product.setName(dto.getName());
+    product.setPrice(dto.getPrice());
+    product.setImage(dto.getImage());
+    product.setDescription(dto.getDescription());
+
+    // Nếu muốn đổi cả danh mục
+    Category category = categoryRepository.findById(dto.getCategory_id())
+        .orElseThrow(() -> new RuntimeException("Danh mục không tồn tại"));
+    product.setCategory(category);
+
+    return productRepository.save(product);
+  }
 }

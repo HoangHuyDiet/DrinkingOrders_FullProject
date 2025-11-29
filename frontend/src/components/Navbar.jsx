@@ -54,9 +54,11 @@ const Navbar = () => {
         {/* Vách ngăn */}
         <div className="h-4 w-px bg-white/20 mx-1"></div>
 
-        <button className="text-sm font-bold tracking-wider hover:text-[#c6a87c] transition">
-          LOGIN
-        </button>
+        <Link to="/login">
+          <button className="text-sm font-bold tracking-wider hover:text-[#c6a87c] transition">
+            LOGIN
+          </button>
+        </Link>
       </div>
     </nav>
   );
