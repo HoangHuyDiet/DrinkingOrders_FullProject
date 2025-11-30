@@ -13,6 +13,7 @@ import ProductManager from "./pages/admin/ProductManager";
 import RegisterPage from "./pages/LoginAndRegister/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginAndRegister/LoginPage";
+import UserManager from "./pages/admin/UserManager";
 
 function App() {
   return (
@@ -28,13 +29,14 @@ function App() {
         {/* --- NHÁNH 2: GIAO DIỆN QUẢN TRỊ --- */}
         {/* Mọi đường dẫn bắt đầu bằng /admin sẽ dùng AdminLayout */}
         <Route path="/admin" element={
-          <ProtectedRoute roleRequired="ADMIN">
+          <ProtectedRoute roleRequired = "ADMIN,STAFF" >
             <AdminLayout/>
           </ProtectedRoute>
         }>
-          <Route index element={<Dashboard />} />        {/* http://localhost:5173/admin */}
-          <Route path="orders" element={<OrderManager />} /> {/* http://localhost:5173/admin/orders */}
+          <Route index element={<Dashboard />} />
+          <Route path="orders" element={<OrderManager />} />
           <Route path="products" element={<ProductManager />} />
+          <Route path="users" element={<UserManager />} />
         </Route>
 
         <Route path="/login" element={<LoginPage />} />

@@ -2,6 +2,7 @@ package com.codewiithhoang.drinkingorders.controller;
 
 import com.codewiithhoang.drinkingorders.entity.User;
 import com.codewiithhoang.drinkingorders.repository.UserRepository;
+import com.codewiithhoang.drinkingorders.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class UserController {
     User user = userRepository.findByUsername(username).orElse(null);
     // 2. Kiểm tra mật khẩu (So sánh chuỗi thô)
     if (user != null && user.getPassword().equals(password)) {
-      // Xoá password trước khi trả về tạo hiệu ứng đã đăng nhập thành công
+      // Giấu password
       user.setPassword(null);
       return ResponseEntity.ok(user); // Trả về user có vai trò gì
     } else {
@@ -39,10 +40,45 @@ public class UserController {
       return ResponseEntity.badRequest().body("Tên đăng nhập đã tồn tại");
     }
 
+    if (userRepository.existsByEmail(user.getEmail())) {
+      return ResponseEntity.badRequest().body("Email đã được sử dụng");
+    }
+
     // Mặc định là khách hàng
     if (user.getRole() == null) user.setRole("USER");
 
-    return  ResponseEntity.ok(userRepository.save(user));
+    User savedUser = userRepository.save(user);
+    savedUser.setPassword(null); //Giấu pass trước khi trả về
+    return ResponseEntity.ok(userRepository.save(user));
+  }
+
+  @GetMapping
+  public ResponseEntity<?> getAllUsers() {
+    return ResponseEntity.ok(userRepository.findAll());
+  }
+
+  @Autowired
+  private UserService userService;
+
+  //API Thêm User
+  @PostMapping
+  public ResponseEntity<?> createUser(@RequestBody User user) {
+    try {
+      // Gọi Service để tạo
+      return ResponseEntity.ok(userService.createUser(user));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
+  //API Xóa User
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    try {
+      userService.deleteUser(id);
+      return ResponseEntity.ok("Xóa thành công!!");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
   }
 
 }

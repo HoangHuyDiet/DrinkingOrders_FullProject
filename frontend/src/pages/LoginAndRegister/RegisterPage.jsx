@@ -1,24 +1,40 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Nhớ import Link
+import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../../services/AuthService';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     username: '', 
-    password: '', 
+    password: '',
+    confirmPassword: '', 
     fullName: '', 
     email: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] =useState(false);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Mật khẩu xác nhận không khớp!!!");
+      return;
+    }
+    setError('');
+    setLoading(true);
+    
     try {
-      await registerUser(formData);
-      alert("Đăng ký thành công! Giờ bạn hãy đăng nhập nhé.");
-      navigate("/login"); // Chuyển sang trang Login
+      const {confirmPassword,...dataToSend} = formData;
+
+      await registerUser(dataToSend);
+      alert("Đăng ký thành công!!! Giờ bạn hãy đăng nhập nhé.");
+      navigate("/login");
     } catch (error) {
-      alert("!!! Lỗi: " + error);
+      setError("Lỗi: " + error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -27,6 +43,11 @@ const RegisterPage = () => {
       <div className="bg-white p-8 rounded-xl shadow-lg w-96 border border-[#c6a87c]">
         <h2 className="text-2xl font-bold text-center text-[#4a3b36] mb-6">ĐĂNG KÝ TÀI KHOẢN</h2>
         
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm text-center">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input 
             placeholder="Họ và tên" 
@@ -54,9 +75,19 @@ const RegisterPage = () => {
             onChange={e => setFormData({...formData, password: e.target.value})} 
             required 
           />
+          <input 
+            type="password"
+            placeholder='Nhập lại mật khẩu'
+            onChange={e => setFormData({...formData, confirmPassword: e.target.value})}
+            required
+            className='w-full p-2 border rounded'
+          />
 
-          <button className="w-full bg-[#c6a87c] text-white py-2 rounded font-bold hover:bg-[#b08d55]">
-            Đăng Ký
+          <button 
+            disabled={loading}
+            className="w-full bg-[#c6a87c] text-white py-2 rounded font-bold hover:bg-[#b08d55]"
+          >
+            {loading ? "Đang xử lý..." : "Đăng ký"}
           </button>
         </form>
 

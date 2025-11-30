@@ -134,7 +134,7 @@ const ProductManager = () => {
 
       {/* DANH SÁCH */}
       <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500">
-        <h3 className="text-xl font-bold text-[#4a3b36] mb-4">📋 Danh Sách Thực Đơn</h3>
+        <h3 className="text-xl font-bold text-[#4a3b36] mb-4">Danh Sách Thực Đơn</h3>
         <div className="overflow-y-auto max-h-[600px]">
           <table className="w-full text-left border-collapse">
             <thead className="bg-gray-100 sticky top-0 z-10">

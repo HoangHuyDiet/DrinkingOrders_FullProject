@@ -10,12 +10,17 @@ const ProtectedRoute = ({children, roleRequired}) => {
         return <Navigate to='/login' replace />;
     }
 
-    // 2. Đăng nhập rồi nhưng sai quyền 
-    if (roleRequired === "ADMIN" && user.role !== "ADMIN" && user.role !== "STAFF") {
-        alert("Bạn không có quyền truy cập trang này!");
-        return <Navigate to="/" replace/>;
+    // 2. Phân quyền cho admin và staff
+    if (roleRequired === "ADMIN") {
+        return user.role === "ADMIN";
     }
-
+    else if (roleRequired === "STAFF") {
+        return user.role === "ADMIN" || user.role ==="STAFF";
+    }
+    else if (roleRequired === "USER"){
+        alert("Bạn không có quyền truy cập trang này!");
+        return <Navigate to = "/" replace />
+    }
     // 3. Hợp lệ -> Cho vào
     return children;
 };

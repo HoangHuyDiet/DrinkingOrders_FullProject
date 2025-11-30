@@ -32,9 +32,7 @@ export const registerUser = async (userData) => {
 
 // 3. Đăng xuất
 export const logout = () => {
-    const userStr = localStorage.getItem("currentUser");
-    if (userStr) return JSON.parse(userStr);
-    return null;
+    localStorage.removeItem("currentUser");
 }
 
 // 4. Lấy thông tin người đang đăng nhập
@@ -42,4 +40,36 @@ export const getCurrentUser = () => {
     const userStr = localStorage.getItem("currentUser");
     if(userStr) return JSON.parse(userStr);
     return null;
+}
+
+// 5. Lấy tất cả users
+export const getAllUsers = async() => {
+    try {
+        const response = await axios.get(API_URL);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi lấy danh sách user:", error);
+        return [];
+    }
+}
+
+// 6. Hàm xóa user
+export const deleteUser = async (id) => {
+    try {
+        await axios.delete(`${API_URL}/${id}`);
+        return true;
+    } catch (error) {
+        console.error("Lỗi xóa user:", error);
+        return false;
+    }
+}
+
+// 7. Thêm user
+export const createUser = async (userData) => {
+    try {
+        const response = await axios.post(API_URL, userData);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || "Lỗi thêm người dùng";
+    }
 }

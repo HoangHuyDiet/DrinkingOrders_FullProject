@@ -20,10 +20,13 @@ const LoginPage = () => {
       const user = await loginUser(username, password);
       
       // 2. Kiểm tra quyền để chuyển hướng (Router)
-      if (user.role === "ADMIN" || user.role === "STAFF") {
+      if (user.role === "ADMIN") {
         alert(`Xin chào quản lý ${user.fullName}!`);
         navigate("/admin"); // Chuyển vào trang Admin
-      } else {
+      } else if (user.role === "STAFF") {
+        navigate("/admin/orders");
+      } 
+      else {
         alert(`Chào mừng khách hàng ${user.fullName}!`);
         navigate("/"); // Chuyển về trang chủ mua hàng
       }
