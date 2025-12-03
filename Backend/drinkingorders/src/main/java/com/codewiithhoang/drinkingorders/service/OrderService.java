@@ -50,6 +50,23 @@ public class OrderService {
       Product product = productRepository.findById(item.getProductId())
           .orElseThrow(() -> new RuntimeException("Sản phẩm ID " + item.getProductId() + " không còn bán!"));
 
+      //Kiểm tra trừ tồn kho
+      int currentStock = product.getQuantity() == null ? 0 : product.getQuantity();
+      int buyQuantity = item.getQuantity();
+
+      // 1. Kiểm tra: Nếu mua nhiều hơn tồn kho -> Báo lỗi ngay
+      if (currentStock < buyQuantity && currentStock > 0) {
+        throw new RuntimeException("Món: '" + product.getName() + "' chỉ còn " + currentStock + " ly, không đủ bán!");
+      }
+      else if (currentStock == 0) {
+        throw new RuntimeException("Món '" + product.getName() + "' đã hết, bạn hãy quay lại vào hôm sau nhé!" );
+      }
+      // 2. Trừ kho: Tồn mới = Tồn cũ - Mua
+      product.setQuantity(currentStock - buyQuantity);
+
+      // 3. Lưu số lượng mới vào Database
+      productRepository.save(product);
+
       // Khởi tạo chi tiết đơn hàng
       OrderDetail detail = new OrderDetail();
       detail.setOrder(order);           // Gán vào đơn hàng cha

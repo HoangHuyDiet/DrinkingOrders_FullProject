@@ -25,3 +25,9 @@ export const updateOrderStatus = async (orderId, status) => {
         throw error;
     }
 };
+
+// 3. Tạo trạng thái thanh toán
+export const createOrder = async (orderData) => {
+    const response = await axios.post(`${API_URL}`, orderData);
+    return response.data;
+}

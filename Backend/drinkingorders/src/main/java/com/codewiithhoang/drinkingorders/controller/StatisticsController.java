@@ -31,6 +31,6 @@ public class StatisticsController {
 
   @GetMapping("/count-users")
   public ResponseEntity<Long> countUsers() {
-    return ResponseEntity.ok(userRepository.count());
+    return ResponseEntity.ok(userRepository.countByRole("USER"));
   }
 }

@@ -13,6 +13,11 @@ export const getRevenueStats = async () => {
 };
 
 export const countUsers = async () => {
-    const res = await axios.get(`${API_URL}/count-users`);
-    return res.data;
+    try {
+        const res = await axios.get(`${API_URL}/count-users`);
+        return res.data;
+    } catch (error) {
+        console.error("Lỗi đếm user:", error);
+        return 0;
+    }
 }

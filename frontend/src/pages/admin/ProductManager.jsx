@@ -47,6 +47,7 @@ const ProductManager = () => {
   // Xử lý Submit (Tự động phân biệt Thêm hoặc Sửa)
   const handleSubmit = async (e) => {
     e.preventDefault();
+    alert("Đã bấm nút");
     try {
       if (editingId) {
         // --- TRƯỜNG HỢP SỬA ---

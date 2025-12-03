@@ -25,6 +25,9 @@ public class Product {
 
   private String image; // Lưu URL ảnh
 
+
+  private Integer quantity;
+
   // Quan hệ N-1 với Category
   @ManyToOne
   @JoinColumn(name = "category_id", nullable = false) // Tên cột trong DB

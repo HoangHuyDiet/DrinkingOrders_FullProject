@@ -72,4 +72,18 @@ public class ProductService {
 
     return productRepository.save(product);
   }
+
+  // 6. Nhập kho
+  public Product importStock(Long id, Integer amount) {
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Không tìm thấy món!"));
+
+    //Lấy số lượng cũ (nếu null thì coi là 0)
+    int currentQuantity = product.getQuantity() == null ? 0 : product.getQuantity();
+
+    //Cộng dồn
+    product.setQuantity(currentQuantity + amount);
+
+    return productRepository.save(product);
+  }
 }

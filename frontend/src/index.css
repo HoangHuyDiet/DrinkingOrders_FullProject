@@ -8,3 +8,7 @@
   --color-gold-500: #c6a87c;
   --color-gold-600: #b08d55;
 }
+
+html {
+  scroll-behavior: smooth;
+}

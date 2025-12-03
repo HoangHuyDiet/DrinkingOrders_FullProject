@@ -52,13 +52,13 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Card 2: Đơn hàng (Giả lập) */}
+        {/* Card 2: Đơn hàng*/}
         <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
           <p className="text-gray-500 text-sm font-bold uppercase tracking-wider">Đơn hàng mới</p>
           <p className="text-3xl font-bold text-blue-600 mt-2">{newOrdersCount}</p>
         </div>
 
-        {/* Card 3: Khách hàng (Giả lập) */}
+        {/* Card 3: Khách hàng */}
         <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-yellow-500">
           <p className="text-gray-500 text-sm font-bold uppercase tracking-wider">Khách hàng</p>
           <p className="text-3xl font-bold text-yellow-600 mt-2">{userCount}</p>

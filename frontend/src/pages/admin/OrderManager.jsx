@@ -6,8 +6,6 @@ const OrderManager = () => {
 
   const fetchOrders = () => {
     getAllOrders().then(data => {
-        console.log("Dữ liệu orders:", data); // Debug
-        // Nếu API trả về null/undefined thì gán mảng rỗng để đỡ lỗi
         setOrders(Array.isArray(data) ? data : []);
     });
   };
@@ -60,7 +58,7 @@ const OrderManager = () => {
                     <div className="text-xs text-gray-400 italic">{order.address}</div>
                   </td>
                   <td className="p-4 font-bold text-[#c6a87c]">
-                    {order.totalPrice?.toLocaleString()} đ
+                    {order.totalPrice?.toLocaleString() || "0"} đ
                   </td>
                   <td className="p-4">{getStatusBadge(order.status)}</td>
                   <td className="p-4 flex gap-2">

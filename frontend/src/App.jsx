@@ -14,22 +14,27 @@ import RegisterPage from "./pages/LoginAndRegister/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginAndRegister/LoginPage";
 import UserManager from "./pages/admin/UserManager";
+import CartPage from "./pages/user/CartPage";
+import InventoryManager from "./pages/admin/InventoryManager";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         {/* --- NHÁNH 1: GIAO DIỆN KHÁCH HÀNG --- */}
-        {/* Mọi đường dẫn con bên trong sẽ dùng UserLayout */}
         <Route path="/" element={<UserLayout />}>
-          <Route index element={<HomePage />} /> {/* Trang chủ mặc định */}
-          {/* <Route path="menu" element={<MenuPage />} /> */}
+          <Route index element={<HomePage />} /> 
+          {/* Đưa Cart vào đây để nó có Navbar và Footer */}
+          <Route path="cart" element={<CartPage />} />
         </Route>
 
+        {/* Các trang lẻ (Không cần Navbar/Footer) */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
         {/* --- NHÁNH 2: GIAO DIỆN QUẢN TRỊ --- */}
-        {/* Mọi đường dẫn bắt đầu bằng /admin sẽ dùng AdminLayout */}
         <Route path="/admin" element={
-          <ProtectedRoute roleRequired = "ADMIN,STAFF" >
+          <ProtectedRoute roleRequired="STAFF">
             <AdminLayout/>
           </ProtectedRoute>
         }>
@@ -37,10 +42,9 @@ function App() {
           <Route path="orders" element={<OrderManager />} />
           <Route path="products" element={<ProductManager />} />
           <Route path="users" element={<UserManager />} />
+          <Route path="inventory" element={<InventoryManager />} />
         </Route>
 
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>
   );

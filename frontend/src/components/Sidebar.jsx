@@ -18,7 +18,8 @@ const Sidebar = () => {
     { name: "Thống kê", path: "/admin", roles: ["ADMIN"] },
     { name: "Quản lý Đơn hàng", path: "/admin/orders",roles: ["ADMIN", "STAFF"] },
     { name: "Quản lý Menu", path: "/admin/products", roles: ["ADMIN"] },
-    { name: "Quản lý Tài Khoản", path: "/admin/users",roles: ["ADMIN"]}
+    { name: "Quản lý Tài Khoản", path: "/admin/users",roles: ["ADMIN"]},
+    { name: "Kho hàng", path: "/admin/inventory", roles: ["ADMIN"]}
   ];
 
   const handleLogout = () => {
@@ -31,7 +32,7 @@ const Sidebar = () => {
   return (
     <aside className="w-64 bg-[#2b211e] text-white flex flex-col h-full min-h-screen">
       <div className="p-6 text-2xl font-bold text-[#c6a87c] border-b border-white/10 flex flex-col">
-        <span>Quản trị</span>
+        <span>Trang Quản Lý</span>
         <span className="text-xs text-grey-400 font-normal mt-1">
           Xin chào, {user?.role === 'ADMIN' ? 'Boss' : 'Nhân viên'} {user?.username}
         </span>

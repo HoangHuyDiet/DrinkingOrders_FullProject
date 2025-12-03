@@ -10,29 +10,37 @@ const RegisterPage = () => {
     fullName: '', 
     email: ''
   });
+  
   const [error, setError] = useState('');
-  const [loading, setLoading] =useState(false);
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp!!!");
+      setError("Mật khẩu xác nhận không khớp!");
       return;
     }
+
     setError('');
     setLoading(true);
     
     try {
-      const {confirmPassword,...dataToSend} = formData;
+      const { confirmPassword, ...dataToSend } = formData;
 
       await registerUser(dataToSend);
-      alert("Đăng ký thành công!!! Giờ bạn hãy đăng nhập nhé.");
+      alert("Đăng ký thành công! Giờ bạn hãy đăng nhập nhé.");
       navigate("/login");
-    } catch (error) {
-      setError("Lỗi: " + error);
+    } catch (err) {
+      // 2. SỬA LỖI [object Object] TẠI ĐÂY
+      // Lấy tin nhắn lỗi từ Backend hoặc hiển thị lỗi mặc định
+      const msg = err.response?.data || "Đăng ký thất bại (Lỗi mạng hoặc Server)";
+      setError("Lỗi: " + msg);
     } finally {
       setLoading(false);
     }
@@ -48,51 +56,57 @@ const RegisterPage = () => {
             {error}
           </div>
         )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input 
+            name="fullName"
             placeholder="Họ và tên" 
-            className="w-full p-2 border rounded" 
-            onChange={e => setFormData({...formData, fullName: e.target.value})} 
+            className="w-full p-2 border rounded focus:outline-none focus:border-[#c6a87c]" 
+            onChange={handleChange} 
             required 
           />
           <input 
+            name="email"
             placeholder="Email" 
             type="email"
-            className="w-full p-2 border rounded" 
-            onChange={e => setFormData({...formData, email: e.target.value})} 
+            className="w-full p-2 border rounded focus:outline-none focus:border-[#c6a87c]" 
+            onChange={handleChange} 
             required 
           />
           <input 
+            name="username"
             placeholder="Tên đăng nhập" 
-            className="w-full p-2 border rounded" 
-            onChange={e => setFormData({...formData, username: e.target.value})} 
+            className="w-full p-2 border rounded focus:outline-none focus:border-[#c6a87c]" 
+            onChange={handleChange} 
             required 
           />
           <input 
+            name="password"
             type="password" 
             placeholder="Mật khẩu" 
-            className="w-full p-2 border rounded" 
-            onChange={e => setFormData({...formData, password: e.target.value})} 
+            className="w-full p-2 border rounded focus:outline-none focus:border-[#c6a87c]" 
+            onChange={handleChange} 
             required 
           />
           <input 
+            name="confirmPassword"
             type="password"
             placeholder='Nhập lại mật khẩu'
-            onChange={e => setFormData({...formData, confirmPassword: e.target.value})}
+            className='w-full p-2 border rounded focus:outline-none focus:border-[#c6a87c]'
+            onChange={handleChange}
             required
-            className='w-full p-2 border rounded'
           />
 
           <button 
             disabled={loading}
-            className="w-full bg-[#c6a87c] text-white py-2 rounded font-bold hover:bg-[#b08d55]"
+            className={`w-full text-white py-2 rounded font-bold transition ${loading ? 'bg-gray-400' : 'bg-[#c6a87c] hover:bg-[#b08d55]'}`}
           >
-            {loading ? "Đang xử lý..." : "Đăng ký"}
+            {loading ? "Đang xử lý..." : "Đăng Ký"}
           </button>
         </form>
 
         <div className="mt-4 text-center text-sm">
-          Đã có tài khoản? <Link to="/login" className="text-blue-600 font-bold">Đăng nhập ngay</Link>
+          Đã có tài khoản? <Link to="/login" className="text-blue-600 font-bold hover:underline">Đăng nhập ngay</Link>
         </div>
       </div>
     </div>
