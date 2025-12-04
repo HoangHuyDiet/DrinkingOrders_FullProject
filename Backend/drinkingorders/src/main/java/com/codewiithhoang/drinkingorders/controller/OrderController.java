@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "*")
@@ -42,5 +44,11 @@ public class OrderController {
     catch (Exception e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
+  }
+
+  //API: Xem lịch sử đơn hàng
+  @GetMapping("/user/{userId}")
+  public ResponseEntity<List<Order>> getHistory(@PathVariable Long userId) {
+    return ResponseEntity.ok(orderService.getOrdersByUser(userId));
   }
 }

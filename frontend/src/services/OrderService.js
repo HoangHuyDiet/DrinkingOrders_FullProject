@@ -31,3 +31,14 @@ export const createOrder = async (orderData) => {
     const response = await axios.post(`${API_URL}`, orderData);
     return response.data;
 }
+
+// 4. Lấy lịch sử đơn hàng của khách
+export const getOrderHistory = async (userId) => {
+    try {
+        const response = await axios.get(`${API_URL}/user/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi lấy lịch sử:", error);
+        return [];
+    }
+};

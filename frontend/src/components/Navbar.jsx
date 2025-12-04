@@ -70,6 +70,8 @@ const Navbar = () => {
             </span>
             </button>
         </Link>
+
+        <Link to="/history" className="hover:text-[#c6a87c]">Lịch sử đơn</Link>
         
         {/* VÁCH NGĂN: Đổi màu theo nền */}
         <div className={`h-4 w-px mx-1 ${isScrolled ? "bg-gray-300" : "bg-white/20"}`}></div>

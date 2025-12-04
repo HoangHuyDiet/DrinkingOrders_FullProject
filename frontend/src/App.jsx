@@ -16,6 +16,7 @@ import LoginPage from "./pages/LoginAndRegister/LoginPage";
 import UserManager from "./pages/admin/UserManager";
 import CartPage from "./pages/user/CartPage";
 import InventoryManager from "./pages/admin/InventoryManager";
+import HistoryPage from "./pages/user/HistoryPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route index element={<HomePage />} /> 
           {/* Đưa Cart vào đây để nó có Navbar và Footer */}
           <Route path="cart" element={<CartPage />} />
+          <Route path="history" element={<HistoryPage />} />
         </Route>
 
         {/* Các trang lẻ (Không cần Navbar/Footer) */}

@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { getMenu } from "../../services/ProductService"; // Import Service lấy API
+import { getMenu, searchProducts } from "../../services/ProductService"; // Import Service lấy API
 import ProductCard from "../../components/ProductCard"; // Import Component vừa tạo
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
+  const [keyword, setKeyword] = useState("");
+
+  //Hàm load tất cả
+  const loadAll = () => {
+    getMenu().then(setProducts);
+  };
 
   // Gọi Backend lấy dữ liệu thật
   useEffect(() => {
-    getMenu().then((data) => {
-      setProducts(data);
-    });
+    loadAll();
   }, []);
+
+  //Hàm xử lý khi bấm nút tìm (Hoặc Enter)
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!keyword.trim()) {
+      loadAll();
+      return;
+    }
+    const results = await searchProducts(keyword);
+    setProducts(results);
+  }
 
   return (
     <div>
@@ -42,6 +57,24 @@ const HomePage = () => {
         <div className="text-center mb-12">
           <p className="text-[#c6a87c] font-bold tracking-widest mb-2">THỰC ĐƠN</p>
           <h2 className="text-4xl font-serif font-bold text-[#4a3b36]">Món Ngon Mỗi Ngày</h2>
+        </div>
+
+        {/* Thanh tìm kiếm */}
+        <div className="max-w-md mx-auto mb-12">
+            <form onSubmit={handleSearch} className="relative flex items-center">
+                <input 
+                    type="text" 
+                    placeholder="Tìm món (Ví dụ: Trà, Bạc xỉu)..." 
+                    className="w-full p-3 pl-5 pr-12 rounded-full border border-gray-300 focus:outline-none focus:border-[#c6a87c] shadow-sm"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                />
+                <button type="submit" className="absolute right-2 p-2 bg-[#c6a87c] text-white rounded-full hover:bg-[#b08d55] transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </button>
+            </form>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">

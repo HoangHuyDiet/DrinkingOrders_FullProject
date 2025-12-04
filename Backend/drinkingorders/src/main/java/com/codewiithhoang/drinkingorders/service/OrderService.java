@@ -97,4 +97,9 @@ public class OrderService {
     order.setStatus(newStatus);
     return orderRepository.save(order);
   }
+
+  //3. Lấy danh sách đơn hàng của một Usser
+  public java.util.List<Order> getOrdersByUser(Long userId) {
+    return orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+  }
 }

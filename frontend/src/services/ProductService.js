@@ -47,3 +47,14 @@ export const updateProduct = async (id, productData) => {
         throw error;
     }
 };
+
+// 5. Tìm kiếm món
+export const searchProducts = async (keyword) => {
+    try {
+        const response = await axios.get(`${API_URL}/search?name=${keyword}`);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi tìm kiếm:", error);
+        return [];
+    }
+}

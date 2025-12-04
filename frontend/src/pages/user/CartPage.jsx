@@ -179,7 +179,7 @@ const CartPage = () => {
                 onClick={handleFinish}
                 className="w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition mt-4"
               >
-                ✅ TÔI ĐÃ CHUYỂN KHOẢN
+                TÔI ĐÃ CHUYỂN KHOẢN
               </button>
               <button 
                 onClick={() => setShowQR(false)}
