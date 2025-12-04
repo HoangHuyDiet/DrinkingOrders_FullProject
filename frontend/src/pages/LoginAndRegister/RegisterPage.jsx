@@ -36,10 +36,10 @@ const RegisterPage = () => {
       await registerUser(dataToSend);
       alert("Đăng ký thành công! Giờ bạn hãy đăng nhập nhé.");
       navigate("/login");
-    } catch (err) {
+    } catch (error) {
       // 2. SỬA LỖI [object Object] TẠI ĐÂY
       // Lấy tin nhắn lỗi từ Backend hoặc hiển thị lỗi mặc định
-      const msg = err.response?.data || "Đăng ký thất bại (Lỗi mạng hoặc Server)";
+      const msg = error.response?.data || "Đăng ký thất bại (Lỗi mạng hoặc Server)";
       setError("Lỗi: " + msg);
     } finally {
       setLoading(false);

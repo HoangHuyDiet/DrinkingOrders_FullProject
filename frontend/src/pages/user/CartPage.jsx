@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import { createOrder } from '../../services/OrderService';
 import { getCurrentUser } from '../../services/AuthService';
@@ -12,20 +12,24 @@ const CartPage = () => {
 
     //State cho Model QR
     const [showQR, setShowQR] = useState(false);
-    const [orderInfo, setOrderInfo] = useState(null);
     
     const navigate = useNavigate();
     const user = getCurrentUser();
     
+    //Khi sửa giỏ hàng -> Tắt QR đi để bắt tính tiền lại
+    useEffect(() => {
+      setShowQR(false);
+    }, [cart]);
+
     //Bước 1: Tạo đơn hàng trước
-    const handleCreateOrder = async () => {
+    const handleShowQR = async () => {
         if (!user) {
             alert("Vui lòng đăng nhập để đặt hàng!");
             navigate("/login");
             return;
         }
         if (cart.length === 0) {
-            alert("GiỎ hàng trống trơn!");
+            alert("GiỎ hàng trống!");
             return;
         }
         if (!address.trim() || !phone.trim()) {
@@ -33,50 +37,43 @@ const CartPage = () => {
           return;
         }
 
-        setLoading(true);
-
-        //Chuẩn bị dữ liệu đúng format Backend yêu cầu
-        const orderPayload = {
-            userId: user.id,
-            address: address,
-            phone: phone,
-            items: cart.map(item => ({
-                productId: item.id,
-                quantity: item.quantity
-            }))
-        };
-
-        try {
-            const res = await createOrder(orderPayload);
-            //Lưu thông tin đơn hàng vừa tạo để hiện QR
-            setOrderInfo(res);
-            setShowQR(true);
-        } catch (error) {
-            let msg = error.response?.data;
-
-            //Backend trả về lỗi => frontend nhận và in ra màn hình
-            if (typeof msg === 'object' && msg !== null) {
-              msg = msg.message || "Lỗi không xác định";
-            }
-
-            if (!msg) msg = "Đặt hàng thất bại! Vui lòng thử lại.";
-            
-            alert("Lỗi: " + msg);
-        } finally {
-          setLoading(false);
-        }
+        setShowQR(true);
     };
 
-    //Bước 2: Xác nhận đã thanh toán xong
-    const handleFinish = () => {
-      alert("Cảm ơn bạn đã mua hàng!");
-      clearCart(); // Xóa sạch giỏ
-      navigate("/"); 
+    const handleConfirmPayment = async () => {
+      setLoading(true);
+
+      //Chuẩn bị dữ liệu
+      const orderPayload = {
+        userId: user.id,
+        address: address,
+        phone: phone,
+        items: cart.map(item => ({
+          productId: item.id,
+          quantity: item.quantity
+        }))
+      };
+
+      try {
+        await createOrder(orderPayload);
+
+        alert("Đã nhận đơn hàng! Chúng tôi sẽ kiểm tra thanh toán và giao hàng sớm nhất.");
+        setShowQR(false);
+        clearCart();
+        navigate("/");
+      } catch (error) {
+        let msg = error.response?.data;
+        if (typeof msg === 'object' && msg !== null) msg = msg.message;
+        alert("Lỗi tạo đơn: " + (msg || "Có lỗi xảy ra"));
+      } finally {
+        setLoading(false);
+      }
+
+      if (cart.length === 0) {
+        return <div className='min-h-screen pt-24 text-center text-gray-500'>Giỏ hàng của bạn đang trống.</div>
+      }
     }
 
-    if (cart.length === 0) {
-        return <div className='min-h-screen pt-24 text-center'>Giỏ hàng của bạn đang trống.</div>
-    }
 
     return (
     <div className="min-h-screen pt-24 pb-10 bg-gray-50 px-4 md:px-20">
@@ -141,7 +138,7 @@ const CartPage = () => {
               onChange={e => setAddress(e.target.value)}
             ></textarea>
             <button 
-              onClick={handleCreateOrder}
+              onClick={handleShowQR}
               disabled={loading}
               className={`w-full py-3 rounded font-bold text-white transition ${loading ? "bg-gray-400" : "bg-[#4a3b36] hover:bg-[#c6a87c]"}`}
             >
@@ -152,7 +149,7 @@ const CartPage = () => {
       </div>
 
       {/* Show QR Code */}
-      {showQR && orderInfo && (
+      {showQR && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden">
             <div className="bg-[#4a3b36] p-4 text-center">
@@ -164,19 +161,20 @@ const CartPage = () => {
               
               {/* ẢNH QR TỰ ĐỘNG TỪ VIETQR API */}
               <img 
-                src={`https://img.vietqr.io/image/MB-0338126216-compact.png?amount=${orderInfo.totalPrice}&addInfo=THANHTOAN DON ${orderInfo.id}`} 
+                src={`https://img.vietqr.io/image/MB-0338126216-compact.png?amount=${totalPrice}&addInfo=THANHTOAN DON ${user.username} ${phone}`} 
                 alt="QR Code" 
                 className="mx-auto w-64 border-2 border-[#c6a87c] rounded-lg"
               />
 
               <div className="bg-gray-50 p-3 rounded text-sm text-left space-y-1">
-                <p>Số tiền: <span className="font-bold text-[#c6a87c]">{orderInfo.totalPrice?.toLocaleString()} VNĐ</span></p>
-                <p>Nội dung: <span className="font-bold">THANHTOAN DON {orderInfo.id}</span></p>
+                <p>Số tiền: <span className="font-bold text-[#c6a87c]">{totalPrice.toLocaleString()} VNĐ</span></p>
+                <p>Nội dung: <span className="font-bold">THANHTOAN DON {user.username} {phone}</span></p>
                 <p>Ngân hàng: <span className="font-bold">MB Bank</span></p>
               </div>
 
               <button 
-                onClick={handleFinish}
+                onClick={handleConfirmPayment}
+                disabled={loading}
                 className="w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition mt-4"
               >
                 TÔI ĐÃ CHUYỂN KHOẢN

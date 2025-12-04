@@ -3,6 +3,7 @@ package com.codewiithhoang.drinkingorders.controller;
 import com.codewiithhoang.drinkingorders.entity.User;
 import com.codewiithhoang.drinkingorders.repository.UserRepository;
 import com.codewiithhoang.drinkingorders.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,10 @@ public class UserController {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private UserService userService;
+
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody Map<String, String> loginData) {
@@ -34,6 +39,7 @@ public class UserController {
     }
   }
 
+  // 2. Đăng ký
   @PostMapping("/register")
   public ResponseEntity<?> register(@RequestBody User user) {
     if (userRepository.existsByUsername(user.getUsername())) {
@@ -49,18 +55,19 @@ public class UserController {
 
     User savedUser = userRepository.save(user);
     savedUser.setPassword(null); //Giấu pass trước khi trả về
-    return ResponseEntity.ok(userRepository.save(user));
+    return ResponseEntity.ok((savedUser));
   }
 
+  //3. Lấy danh sách
   @GetMapping
   public ResponseEntity<?> getAllUsers() {
-    return ResponseEntity.ok(userRepository.findAll());
+    List<User> users = userRepository.findAll();
+    users.forEach(u -> u.setPassword(null));
+    return ResponseEntity.ok(users);
   }
 
-  @Autowired
-  private UserService userService;
 
-  //API Thêm User
+  // 4. Thêm user
   @PostMapping
   public ResponseEntity<?> createUser(@RequestBody User user) {
     try {
@@ -70,7 +77,7 @@ public class UserController {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
-  //API Xóa User
+  // 5. Xóa User
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteUser(@PathVariable Long id) {
     try {
